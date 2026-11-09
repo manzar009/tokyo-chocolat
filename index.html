@@ -76,12 +76,15 @@ header.site{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-
 header.site.on{opacity:1;pointer-events:auto}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand svg{display:block}
-.nav{display:flex;gap:8px;position:absolute;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%)}
+.navlink{position:relative;font:500 13px/1 var(--f-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:12px 2px}
+.navlink::after{content:"";position:absolute;left:2px;right:2px;bottom:6px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s cubic-bezier(.7,0,.2,1)}
+.navlink:hover::after,.navlink:focus-visible::after{transform:scaleX(1);transform-origin:left}
+.nav{display:flex;gap:34px;position:absolute;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%)}
 /* ---------- buy / cart button (top right, always) ---------- */
 #cta{position:fixed;z-index:60;top:calc(16px + env(safe-area-inset-top,0px));right:max(20px, env(safe-area-inset-right,0px));perspective:700px;
   opacity:0;transform:translateY(-12px);transition:opacity .7s, transform .7s cubic-bezier(.2,.7,.1,1)}
 #cta.show{opacity:1;transform:none}
-#cta .flip{position:relative;display:block;width:148px;height:40px;padding:0;border:0;background:none;cursor:pointer;transform-style:preserve-3d;
+#cta .flip{position:relative;display:block;width:118px;height:40px;padding:0;border:0;background:none;cursor:pointer;transform-style:preserve-3d;
   transition:transform 1s cubic-bezier(.68,-.32,.26,1.32)}
 #cta.cart .flip{transform:rotateX(-180deg)}
 #cta .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:999px;overflow:hidden;
@@ -298,7 +301,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
   #ruler{display:none}
   .chapter .meta b{font-size:24px}
 }
-@media (max-width:700px){ .nav{display:none} #cta .flip{width:122px} #cta .face .jp{display:none} }
+@media (max-width:700px){ .nav{display:none} #cta .face .jp{display:none} }
 
 /* reduced motion: no curtain, no loader, static layout */
 .rm #loader,.rm #curtain,.rm #hint{display:none}
@@ -351,16 +354,16 @@ footer .giantmark svg{display:block;width:100%;height:auto}
     <svg viewBox="0 0 1000 282.9" width="104" height="29.4" aria-hidden="true"><path fill="#16110E" d="M0 34.3H43.6V158.9H82V34.3H125.8V0H0ZM224.8 79.5Q224.8 65.4 230.4 54.6Q235.9 43.8 246 37.7Q256.1 31.6 269.8 31.6Q283.6 31.6 293.6 37.7Q303.6 43.8 309 54.6Q314.5 65.4 314.5 79.5Q314.5 93.6 308.9 104.3Q303.4 115.1 293.3 121.3Q283.2 127.4 269.8 127.4Q256.1 127.4 246 121.3Q235.9 115.1 230.4 104.3Q224.8 93.6 224.8 79.5ZM184.2 79.5Q184.2 97.9 190.4 113.3Q196.6 128.7 208.1 140.1Q219.6 151.5 235.2 157.7Q250.9 163.9 269.8 163.9Q288.4 163.9 304 157.7Q319.7 151.5 331.2 140.1Q342.6 128.7 348.9 113.3Q355.1 97.9 355.1 79.5Q355.1 61.1 348.8 45.9Q342.4 30.7 330.8 19.5Q319.3 8.4 303.7 2.4Q288.1 -3.6 269.8 -3.6Q251.6 -3.6 235.9 2.4Q220.3 8.4 208.7 19.5Q197.1 30.7 190.6 45.9Q184.2 61.1 184.2 79.5ZM429.6 0V158.9H469.3V0ZM523.4 0 458.2 75.6 525.2 158.9H571.8L503.9 74.5L568.3 0ZM727.5 0 696.4 59.7 665.3 0H621.3L676.9 94.5V158.9H715.9V94.2L771.6 0ZM869.7 79.5Q869.7 65.4 875.2 54.6Q880.8 43.8 890.9 37.7Q901 31.6 914.6 31.6Q928.5 31.6 938.5 37.7Q948.5 43.8 953.9 54.6Q959.4 65.4 959.4 79.5Q959.4 93.6 953.8 104.3Q948.2 115.1 938.1 121.3Q928 127.4 914.6 127.4Q901 127.4 890.9 121.3Q880.8 115.1 875.2 104.3Q869.7 93.6 869.7 79.5ZM829 79.5Q829 97.9 835.3 113.3Q841.5 128.7 853 140.1Q864.4 151.5 880.1 157.7Q895.8 163.9 914.6 163.9Q933.2 163.9 948.9 157.7Q964.6 151.5 976 140.1Q987.5 128.7 993.8 113.3Q1000 97.9 1000 79.5Q1000 61.1 993.6 45.9Q987.3 30.7 975.7 19.5Q964.1 8.4 948.6 2.4Q933 -3.6 914.6 -3.6Q896.5 -3.6 880.8 2.4Q865.1 8.4 853.5 19.5Q842 30.7 835.5 45.9Q829 61.1 829 79.5ZM17.5 249.5Q17.5 243.3 20.3 239Q23.1 234.6 27.6 232.3Q32.1 230 37.6 230Q42.3 230 46 231.2Q49.6 232.4 52.5 234.4Q55.3 236.5 57.5 238.8V221.4Q53.5 218.3 48.7 216.5Q44 214.6 36.6 214.6Q28.6 214.6 21.8 217.1Q15.1 219.6 10.2 224.3Q5.3 228.9 2.7 235.3Q0 241.7 0 249.5Q0 257.4 2.7 263.8Q5.3 270.1 10.2 274.8Q15.1 279.5 21.8 282Q28.6 284.5 36.6 284.5Q44 284.5 48.7 282.6Q53.5 280.8 57.5 277.7V260.3Q55.3 262.6 52.5 264.6Q49.6 266.6 46 267.9Q42.3 269.1 37.6 269.1Q32.1 269.1 27.6 266.8Q23.1 264.5 20.3 260.1Q17.5 255.6 17.5 249.5ZM141.5 255H191.9V240.5H141.5ZM181.8 216.2V282.9H197.9V216.2ZM137 216.2V282.9H153.1V216.2ZM291.5 249.5Q291.5 243.6 293.9 239.1Q296.2 234.6 300.5 232Q304.7 229.4 310.4 229.4Q316.2 229.4 320.4 232Q324.6 234.6 326.9 239.1Q329.2 243.6 329.2 249.5Q329.2 255.5 326.9 260Q324.5 264.5 320.3 267.1Q316.1 269.7 310.4 269.7Q304.7 269.7 300.5 267.1Q296.2 264.5 293.9 260Q291.5 255.5 291.5 249.5ZM274.5 249.5Q274.5 257.3 277.1 263.8Q279.7 270.2 284.5 275Q289.4 279.8 295.9 282.4Q302.5 285 310.4 285Q318.2 285 324.8 282.4Q331.4 279.8 336.2 275Q341 270.2 343.7 263.8Q346.3 257.3 346.3 249.5Q346.3 241.8 343.6 235.4Q340.9 229 336.1 224.4Q331.2 219.7 324.7 217.2Q318.2 214.6 310.4 214.6Q302.8 214.6 296.2 217.2Q289.6 219.7 284.8 224.4Q279.9 229 277.2 235.4Q274.5 241.8 274.5 249.5ZM436.7 249.5Q436.7 243.3 439.4 239Q442.2 234.6 446.7 232.3Q451.2 230 456.7 230Q461.4 230 465.1 231.2Q468.7 232.4 471.6 234.4Q474.4 236.5 476.6 238.8V221.4Q472.6 218.3 467.8 216.5Q463.1 214.6 455.7 214.6Q447.7 214.6 440.9 217.1Q434.2 219.6 429.3 224.3Q424.4 228.9 421.8 235.3Q419.1 241.7 419.1 249.5Q419.1 257.4 421.8 263.8Q424.4 270.1 429.3 274.8Q434.2 279.5 440.9 282Q447.7 284.5 455.7 284.5Q463.1 284.5 467.8 282.6Q472.6 280.8 476.6 277.7V260.3Q474.4 262.6 471.6 264.6Q468.7 266.6 465.1 267.9Q461.4 269.1 456.7 269.1Q451.2 269.1 446.7 266.8Q442.2 264.5 439.4 260.1Q436.7 255.6 436.7 249.5ZM569.4 249.5Q569.4 243.6 571.7 239.1Q574 234.6 578.3 232Q582.5 229.4 588.2 229.4Q594.1 229.4 598.3 232Q602.5 234.6 604.7 239.1Q607 243.6 607 249.5Q607 255.5 604.7 260Q602.4 264.5 598.1 267.1Q593.9 269.7 588.2 269.7Q582.5 269.7 578.3 267.1Q574 264.5 571.7 260Q569.4 255.5 569.4 249.5ZM552.3 249.5Q552.3 257.3 554.9 263.8Q557.5 270.2 562.3 275Q567.2 279.8 573.7 282.4Q580.3 285 588.2 285Q596.1 285 602.6 282.4Q609.2 279.8 614 275Q618.9 270.2 621.5 263.8Q624.1 257.3 624.1 249.5Q624.1 241.8 621.4 235.4Q618.8 229 613.9 224.4Q609 219.7 602.5 217.2Q596 214.6 588.2 214.6Q580.6 214.6 574 217.2Q567.5 219.7 562.6 224.4Q557.7 229 555 235.4Q552.3 241.8 552.3 249.5ZM700.7 216.2V282.9H743.6V269.1H716.8V216.2ZM827.9 270H863.2L862.1 257.7H829.1ZM845.4 240.7 854.8 262.3 854.2 266.4 862.2 282.9H880.5L845.4 212L810.3 282.9H828.5L836.8 265.8L836 262.2ZM947.2 230.6H965.5V282.9H981.6V230.6H1000V216.2H947.2Z"/></svg>
   </a>
   <nav class="nav" aria-label="メインメニュー">
-    <a class="pill" href="#story" data-to="#story">story<span class="jp">想い</span></a>
-    <a class="pill" href="#milk" data-to="#milk">flavours<span class="jp">味</span></a>
-    <a class="pill" href="#collection" data-to="#collection">box<span class="jp">箱</span></a>
+    <a class="navlink" href="#story" data-to="#story">story</a>
+    <a class="navlink" href="#milk" data-to="#milk">flavours</a>
+    <a class="navlink" href="#collection" data-to="#collection">box</a>
   </nav>
 </header>
 
 <div id="cta"><button type="button" class="flip" id="ctaBtn" aria-label="購入する">
-  <span class="face front">Buy <span class="jp">購入</span>
+  <span class="face front">Buy
     <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></span>
-  <span class="face back"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 7Z M9 7V5.5a3 3 0 0 1 6 0V7" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>Cart <span class="jp">カート</span></span>
+  <span class="face back"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 7Z M9 7V5.5a3 3 0 0 1 6 0V7" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>Cart</span>
 </button><span class="n" id="cartN">0</span></div>
 <div id="cartBg"></div>
 <aside id="cartPanel" aria-label="カート" aria-hidden="true">
@@ -693,7 +696,7 @@ function intro() {
     .to(o, { v: 100, duration: 2.1, ease: 'power2.inOut', onUpdate: () => cnt.textContent = String(Math.round(o.v)).padStart(3, '0') }, 0)
     .to('#loader .word span', { yPercent: -110, duration: 0.7, ease: 'power3.in', stagger: 0.04 }, '>-0.1')
     .to('#loader', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '>-0.2')
-    .add(() => { $('#loader').style.display = 'none'; lenis && lenis.start(); $('#cta').classList.add('show'); })
+    .add(() => { $('#loader').style.display = 'none'; lenis && lenis.start(); })
     .from('#hint .l1 .w > span', { yPercent: 110, duration: 0.9, ease: 'power3.out', stagger: 0.05 }, '>-0.5')
     .from('#hint .l2', { opacity: 0, duration: 0.8 }, '<0.3')
     .from('#hint .stem', { scaleY: 0, duration: 1.2, ease: 'power3.out' }, '<');
@@ -704,9 +707,15 @@ const heroChs = intro();
 
 /* ---------------- buy → cart ---------------- */
 const ctaEl = $('#cta'), cartN = $('#cartN');
-if (reduce) ctaEl.classList.add('show');
 const visitEl = $('#visit');
-const ctaMode = () => ctaEl.classList.toggle('cart', visitEl.getBoundingClientRect().top < innerHeight * 0.55);
+// Buy appears with the box (as the story section comes in); it turns into Cart
+// the moment the three product cards are on screen.
+const storyEl = $('#story'), colEl = $('#collection');
+const ctaMode = () => {
+  const vh = innerHeight;
+  ctaEl.classList.toggle('show', reduce || storyEl.getBoundingClientRect().top < vh * 0.6);
+  ctaEl.classList.toggle('cart', colEl.getBoundingClientRect().top < -6.5 * vh);
+};
 addEventListener('scroll', ctaMode, { passive: true }); addEventListener('resize', ctaMode); ctaMode();
 const FL = { milk: ['Milk', 'ミルク', '#4A2C20'], strawberry: ['Strawberry', 'いちご', '#752F41'], matcha: ['Matcha', '抹茶', '#33482B'] };
 let cart = {};
