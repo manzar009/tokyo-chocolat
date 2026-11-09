@@ -76,7 +76,62 @@ header.site{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-
 header.site.on{opacity:1;pointer-events:auto}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand svg{display:block}
-.nav{display:flex;gap:8px}
+.nav{display:flex;gap:8px;position:absolute;left:50%;top:calc(18px + env(safe-area-inset-top,0px));transform:translateX(-50%)}
+/* ---------- buy / cart button (top right, always) ---------- */
+#cta{position:fixed;z-index:60;top:calc(16px + env(safe-area-inset-top,0px));right:max(20px, env(safe-area-inset-right,0px));perspective:700px;
+  opacity:0;transform:translateY(-12px);transition:opacity .7s, transform .7s cubic-bezier(.2,.7,.1,1)}
+#cta.show{opacity:1;transform:none}
+#cta .flip{position:relative;display:block;width:148px;height:40px;padding:0;border:0;background:none;cursor:pointer;transform-style:preserve-3d;
+  transition:transform 1s cubic-bezier(.68,-.32,.26,1.32)}
+#cta.cart .flip{transform:rotateX(-180deg)}
+#cta .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:9px;border-radius:999px;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;font:600 12px/1 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:#fff;
+  box-shadow:0 10px 26px -10px rgba(40,22,10,.55), inset 0 0 0 1px rgba(255,255,255,.18)}
+#cta .face .jp{font:500 11px/1 var(--f-jp);letter-spacing:.12em;opacity:.75;text-transform:none}
+#cta .front{background:linear-gradient(120deg,#9A7128,#C99A4A 50%,#9A7128)}
+#cta .front::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
+  transform:skewX(-20deg);animation:sheen 4.5s ease-in-out infinite 2s}
+@keyframes sheen{0%,70%{left:-60%}100%{left:130%}}
+#cta .back{background:var(--ink);transform:rotateX(180deg)}
+#cta .back svg{display:block}
+#cta .n{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:#752F41;color:#fff;
+  font:700 11px/20px var(--f-sans);text-align:center;transform:scale(0);transition:transform .45s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+#cta .n.on{transform:scale(1)}
+#cta .n.bump{animation:bump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+#cta .flip:hover .face{filter:brightness(1.08)}
+/* cart drawer */
+#cartBg{position:fixed;inset:0;z-index:70;background:rgba(22,17,14,.38);opacity:0;pointer-events:none;transition:opacity .5s}
+#cartBg.open{opacity:1;pointer-events:auto}
+#cartPanel{position:fixed;z-index:71;top:0;right:0;bottom:0;width:min(400px,92vw);background:#FBFAF7;box-shadow:-30px 0 60px -20px rgba(40,22,10,.35);
+  transform:translateX(104%);transition:transform .7s cubic-bezier(.7,0,.2,1);display:flex;flex-direction:column;padding:calc(26px + env(safe-area-inset-top,0px)) 26px 26px}
+#cartPanel.open{transform:none}
+#cartPanel h2{font:300 italic 40px/1 var(--f-display);display:flex;align-items:baseline;gap:12px}
+#cartPanel h2 span{font:500 13px/1 var(--f-jp);font-style:normal;letter-spacing:.2em;color:var(--mute)}
+#cartPanel .x{position:absolute;top:calc(22px + env(safe-area-inset-top,0px));right:20px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(22,17,14,.15);background:none;font-size:18px;cursor:pointer}
+#cartList{flex:1;overflow:auto;margin:26px 0;display:flex;flex-direction:column;gap:12px}
+#cartList .it{display:grid;grid-template-columns:14px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid rgba(22,17,14,.08)}
+#cartList .dot{width:12px;height:12px;border-radius:50%}
+#cartList .nm{font:400 italic 24px/1.1 var(--f-display)}
+#cartList .nm small{display:block;font:500 11px/1.6 var(--f-jp);font-style:normal;color:var(--mute);letter-spacing:.1em}
+#cartList .q{display:flex;align-items:center;gap:8px;font:500 14px/1 var(--f-sans)}
+#cartList .q button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(22,17,14,.18);background:none;cursor:pointer}
+#cartList .empty{font:500 14px/1.8 var(--f-jp);color:var(--mute)}
+#cartPanel .tot{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-top:1px solid rgba(22,17,14,.12)}
+#cartPanel .tot p{font:600 11px/1 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+#cartPanel .tot b{font:300 32px/1 var(--f-sans);font-variant-numeric:tabular-nums}
+#cartPanel .go{height:52px;border:0;border-radius:999px;background:var(--ink);color:#fff;font:600 13px/1 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+#cartPanel .note{margin-top:12px;font:500 12px/1.8 var(--f-jp);color:var(--mute);text-align:center;min-height:2em}
+/* add to cart in the buying section */
+#visit .pick{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#visit .pick button{height:40px;padding:0 18px;border-radius:999px;border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.08);color:#fff;
+  font:500 13px/1 var(--f-sans);letter-spacing:.08em;cursor:pointer;transition:background .3s,color .3s}
+#visit .pick button.on{background:#fff;color:var(--ink)}
+#visit .acts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.cta.ghost{background:transparent;color:#fff;box-shadow:none;border:1px solid rgba(255,255,255,.6)}
+.cta.ghost .jp{color:#fff;opacity:.8}
+button.cta{border:0;cursor:pointer}
+.pcard .tag.add{border:0;cursor:pointer}
 .pill{position:relative;overflow:hidden;display:inline-flex;align-items:center;height:36px;padding:0 16px;border:0;border-radius:4px;
   background:rgba(22,17,14,.06);color:var(--ink);font:500 13px/1 var(--f-sans);letter-spacing:.04em;text-decoration:none;cursor:pointer;isolation:isolate}
 .pill::before{content:"";position:absolute;inset:0;background:var(--gold);transform:translateY(101%);transition:transform .45s cubic-bezier(.7,0,.2,1);z-index:-1}
@@ -96,6 +151,7 @@ header.site.on{opacity:1;pointer-events:auto}
 /* ---------- hero (light world under the curtain) ---------- */
 #hero{position:relative;height:340vh}
 #hero .stick{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+#hero .giant{font-size:clamp(46px,10.5vw,200px)}
 .giant{font-family:var(--f-display);font-style:italic;font-weight:300;line-height:.86;letter-spacing:-.02em;
   font-size:clamp(76px,17vw,300px);display:flex;white-space:nowrap;text-decoration:none}
 .giant .ch{display:inline-block;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
@@ -242,7 +298,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
   #ruler{display:none}
   .chapter .meta b{font-size:24px}
 }
-@media (max-width:520px){ .nav .pill:nth-child(1){display:none} }
+@media (max-width:700px){ .nav{display:none} #cta .flip{width:122px} #cta .face .jp{display:none} }
 
 /* reduced motion: no curtain, no loader, static layout */
 .rm #loader,.rm #curtain,.rm #hint{display:none}
@@ -301,12 +357,27 @@ footer .giantmark svg{display:block;width:100%;height:auto}
   </nav>
 </header>
 
+<div id="cta"><button type="button" class="flip" id="ctaBtn" aria-label="購入する">
+  <span class="face front">Buy <span class="jp">購入</span>
+    <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden="true"><path d="M1 5h11M8 1l4 4-4 4" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+  <span class="face back"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 7Z M9 7V5.5a3 3 0 0 1 6 0V7" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>Cart <span class="jp">カート</span></span>
+</button><span class="n" id="cartN">0</span></div>
+<div id="cartBg"></div>
+<aside id="cartPanel" aria-label="カート" aria-hidden="true">
+  <h2>Cart <span>カート</span></h2>
+  <button type="button" class="x" id="cartX" aria-label="閉じる">✕</button>
+  <div id="cartList"></div>
+  <div class="tot"><p>Total · 税抜</p><b id="cartTot">¥0</b></div>
+  <button type="button" class="go" id="cartGo">Checkout</button>
+  <p class="note" id="cartNote"></p>
+</aside>
+
 <div id="ruler" aria-hidden="true"><div class="ticks"></div><div class="fill" id="rfill"></div><span class="pct" id="rpct">000%</span></div>
 
 <main id="top">
   <section id="hero" class="dots" aria-label="Tokyo Chocolat">
     <div class="stick">
-      <h1 class="giant" id="heroWord" aria-label="Tokyo">Tokyo</h1>
+      <h1 class="giant" id="heroWord" aria-label="Tokyo Chocolat">Tokyo Chocolat</h1>
       <div class="sub">
         <p>Tokyo Chocolat — a taste of Tokyo in every piece</p>
         <p class="jp">東京の味を、ひと粒に。</p>
@@ -362,7 +433,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <h3>Matcha<span>抹茶</span></h3>
             <p class="desc">濃厚な抹茶の、ほろ苦い大人の味。</p>
             <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
-            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><a class="tag" href="#where" data-to="#where">Where to buy</a></div>
+            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="matcha">Add to cart</button></div>
           </div>
         </article>
         <article class="pcard" data-f="milk" style="--fc:#4A2C20;--tint:#EBDFD2" aria-label="Milk ミルク">
@@ -372,7 +443,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <h3>Milk<span>ミルク</span></h3>
             <p class="desc">まろやかで、やさしい甘さのミルクチョコレート。</p>
             <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
-            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><a class="tag" href="#where" data-to="#where">Where to buy</a></div>
+            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="milk">Add to cart</button></div>
           </div>
         </article>
         <article class="pcard" data-f="strawberry" style="--fc:#752F41;--tint:#F2DCE1" aria-label="Strawberry いちご">
@@ -382,7 +453,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <h3>Strawberry<span>いちご</span></h3>
             <p class="desc">甘酸っぱい、いちごのチョコレート。</p>
             <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
-            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><a class="tag" href="#where" data-to="#where">Where to buy</a></div>
+            <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="strawberry">Add to cart</button></div>
           </div>
         </article>
 
@@ -410,9 +481,15 @@ footer .giantmark svg{display:block;width:100%;height:auto}
       <div class="row" data-dir="1"><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span></div>
     </div>
     <div class="box">
-      <p class="eyebrow" id="visitTitle" style="color:#fff">Find us at the gate</p>
+      <p class="eyebrow" id="visitTitle" style="color:#fff">Take Tokyo home</p>
       <p class="price">¥1,400<small>税抜</small></p>
-      <a class="cta" href="#where" data-to="#where">where to buy <span class="jp">販売店</span></a>
+      <div class="pick" role="group" aria-label="フレーバー">
+        <button type="button" data-f="milk" class="on">Milk</button><button type="button" data-f="strawberry">Strawberry</button><button type="button" data-f="matcha">Matcha</button>
+      </div>
+      <div class="acts">
+        <button type="button" class="cta" id="addSel">Add to cart <span class="jp">カートに入れる</span></button>
+        <a class="cta ghost" href="#where" data-to="#where">where to buy <span class="jp">販売店</span></a>
+      </div>
     </div>
   </section>
 </main>
@@ -598,7 +675,7 @@ function drawCurtain(p) {
 /* ---------------- text splitting ---------------- */
 function splitChars(el) {
   const txt = el.dataset.word || el.textContent.trim();
-  el.innerHTML = [...txt].map(c => `<span class="ch" aria-hidden="true">${c}</span>`).join('');
+  el.innerHTML = [...txt].map(c => `<span class="ch" aria-hidden="true">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
   const chs = [...el.querySelectorAll('.ch')];
   chs.forEach((c, i) => { c.style.setProperty('--bgw', (chs.length * 100) + '%'); c.style.backgroundPosition = `${(i / Math.max(1, chs.length - 1)) * 100}% 0`; });
   return chs;
@@ -616,7 +693,7 @@ function intro() {
     .to(o, { v: 100, duration: 2.1, ease: 'power2.inOut', onUpdate: () => cnt.textContent = String(Math.round(o.v)).padStart(3, '0') }, 0)
     .to('#loader .word span', { yPercent: -110, duration: 0.7, ease: 'power3.in', stagger: 0.04 }, '>-0.1')
     .to('#loader', { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'expo.inOut' }, '>-0.2')
-    .add(() => { $('#loader').style.display = 'none'; lenis && lenis.start(); })
+    .add(() => { $('#loader').style.display = 'none'; lenis && lenis.start(); $('#cta').classList.add('show'); })
     .from('#hint .l1 .w > span', { yPercent: 110, duration: 0.9, ease: 'power3.out', stagger: 0.05 }, '>-0.5')
     .from('#hint .l2', { opacity: 0, duration: 0.8 }, '<0.3')
     .from('#hint .stem', { scaleY: 0, duration: 1.2, ease: 'power3.out' }, '<');
@@ -624,6 +701,40 @@ function intro() {
   return heroChs;
 }
 const heroChs = intro();
+
+/* ---------------- buy → cart ---------------- */
+const ctaEl = $('#cta'), cartN = $('#cartN');
+if (reduce) ctaEl.classList.add('show');
+const visitEl = $('#visit');
+const ctaMode = () => ctaEl.classList.toggle('cart', visitEl.getBoundingClientRect().top < innerHeight * 0.55);
+addEventListener('scroll', ctaMode, { passive: true }); addEventListener('resize', ctaMode); ctaMode();
+const FL = { milk: ['Milk', 'ミルク', '#4A2C20'], strawberry: ['Strawberry', 'いちご', '#752F41'], matcha: ['Matcha', '抹茶', '#33482B'] };
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem('tc-cart') || '{}') || {}; } catch (e) { cart = {}; }
+const saveCart = () => { try { localStorage.setItem('tc-cart', JSON.stringify(cart)); } catch (e) {} };
+function renderCart(bump) {
+  const n = Object.values(cart).reduce((a, b) => a + b, 0);
+  cartN.textContent = n; cartN.classList.toggle('on', n > 0);
+  if (bump && n > 0) { cartN.classList.remove('bump'); void cartN.offsetWidth; cartN.classList.add('bump'); }
+  const list = $('#cartList');
+  list.innerHTML = n ? Object.entries(cart).filter(([, q]) => q > 0).map(([f, q]) =>
+    `<div class="it"><span class="dot" style="background:${FL[f][2]}"></span><p class="nm">${FL[f][0]}<small>${FL[f][1]} · 50g · ¥1,400</small></p>
+     <div class="q"><button type="button" data-q="${f}" data-d="-1" aria-label="減らす">−</button>${q}<button type="button" data-q="${f}" data-d="1" aria-label="増やす">+</button></div></div>`).join('')
+    : '<p class="empty">カートは空です。<br>お好きな味を選んでください。</p>';
+  $('#cartTot').textContent = '¥' + (n * 1400).toLocaleString('ja-JP');
+}
+function addToCart(f) { cart[f] = (cart[f] || 0) + 1; saveCart(); renderCart(true); }
+function openCart(o) { $('#cartPanel').classList.toggle('open', o); $('#cartBg').classList.toggle('open', o); $('#cartPanel').setAttribute('aria-hidden', o ? 'false' : 'true'); $('#cartNote').textContent = ''; }
+renderCart(false);
+$('#ctaBtn').addEventListener('click', () => { if (ctaEl.classList.contains('cart')) openCart(true); else scrollToTarget('#visit'); });
+$('#cartX').addEventListener('click', () => openCart(false)); $('#cartBg').addEventListener('click', () => openCart(false));
+addEventListener('keydown', e => { if (e.key === 'Escape') openCart(false); });
+$('#cartList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const f = b.dataset.q; cart[f] = Math.max(0, (cart[f] || 0) + +b.dataset.d); if (!cart[f]) delete cart[f]; saveCart(); renderCart(false); });
+$('#cartGo').addEventListener('click', () => { $('#cartNote').textContent = Object.keys(cart).length ? 'オンライン販売は準備中です。空港・都内アンテナショップでお求めください。' : 'カートは空です。'; });
+let pickF = 'milk';
+$$('#visit .pick button').forEach(b => b.addEventListener('click', () => { pickF = b.dataset.f; $$('#visit .pick button').forEach(x => x.classList.toggle('on', x === b)); }));
+$('#addSel').addEventListener('click', () => addToCart(pickF));
+$$('.pcard .add').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); addToCart(b.dataset.add); }));
 
 /* ---------------- scroll scenes ---------------- */
 const hdr = $('#hdr'), rul = $('#ruler'), rfill = $('#rfill'), rpct = $('#rpct'), hint = $('#hint');
