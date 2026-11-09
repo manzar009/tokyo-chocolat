@@ -533,9 +533,15 @@ if (!reduce && window.Lenis) {
   gsap.ticker.lagSmoothing(0);
   lenis.stop();
 }
+// smooth, unhurried scrolling for menu / Buy clicks: the longer the trip, the longer it takes,
+// with a soft start and a soft landing
+const easeInOutCubic = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const scrollToTarget = (t) => {
-  const el = t === 0 ? 0 : document.querySelector(t);
-  if (lenis) lenis.scrollTo(el, { duration: 1.6 }); else (el === 0 ? scrollTo(0,0) : el.scrollIntoView());
+  const y = typeof t === 'number' ? t : (document.querySelector(t).getBoundingClientRect().top + scrollY);
+  if (!lenis) { scrollTo({ top: y, behavior: 'smooth' }); return; }
+  const screens = Math.abs(y - scrollY) / innerHeight;
+  const duration = Math.min(4.6, Math.max(1.2, 0.9 + Math.sqrt(screens) * 0.85));
+  lenis.scrollTo(y, { duration, easing: easeInOutCubic, lock: true, force: true });
 };
 $$('[data-to]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); const v = a.dataset.to; scrollToTarget(v === '0' ? 0 : v); }));
 
@@ -713,10 +719,11 @@ const visitEl = $('#visit');
 const storyEl = $('#story'), colEl = $('#collection');
 const ctaMode = () => {
   const vh = innerHeight;
-  ctaEl.classList.toggle('show', reduce || storyEl.getBoundingClientRect().top < vh * 0.6);
-  ctaEl.classList.toggle('cart', colEl.getBoundingClientRect().top < -6.5 * vh);
+  const hasItems = Object.keys(cart).length > 0;          // once something is in the cart, it stays a Cart button
+  ctaEl.classList.toggle('show', reduce || hasItems || storyEl.getBoundingClientRect().top < vh * 0.6);
+  ctaEl.classList.toggle('cart', hasItems || colEl.getBoundingClientRect().top < -6.5 * vh);
 };
-addEventListener('scroll', ctaMode, { passive: true }); addEventListener('resize', ctaMode); ctaMode();
+addEventListener('scroll', ctaMode, { passive: true }); addEventListener('resize', ctaMode);
 const FL = { milk: ['Milk', 'ミルク', '#4A2C20'], strawberry: ['Strawberry', 'いちご', '#752F41'], matcha: ['Matcha', '抹茶', '#33482B'] };
 let cart = {};
 try { cart = JSON.parse(localStorage.getItem('tc-cart') || '{}') || {}; } catch (e) { cart = {}; }
@@ -732,13 +739,13 @@ function renderCart(bump) {
     : '<p class="empty">カートは空です。<br>お好きな味を選んでください。</p>';
   $('#cartTot').textContent = '¥' + (n * 1400).toLocaleString('ja-JP');
 }
-function addToCart(f) { cart[f] = (cart[f] || 0) + 1; saveCart(); renderCart(true); }
+function addToCart(f) { cart[f] = (cart[f] || 0) + 1; saveCart(); renderCart(true); ctaMode(); }
 function openCart(o) { $('#cartPanel').classList.toggle('open', o); $('#cartBg').classList.toggle('open', o); $('#cartPanel').setAttribute('aria-hidden', o ? 'false' : 'true'); $('#cartNote').textContent = ''; }
-renderCart(false);
-$('#ctaBtn').addEventListener('click', () => { if (ctaEl.classList.contains('cart')) openCart(true); else scrollToTarget('#visit'); });
+renderCart(false); ctaMode();
+$('#ctaBtn').addEventListener('click', () => { if (ctaEl.classList.contains('cart')) openCart(true); else scrollToTarget(colEl.getBoundingClientRect().top + scrollY + 6.9 * innerHeight); });
 $('#cartX').addEventListener('click', () => openCart(false)); $('#cartBg').addEventListener('click', () => openCart(false));
 addEventListener('keydown', e => { if (e.key === 'Escape') openCart(false); });
-$('#cartList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const f = b.dataset.q; cart[f] = Math.max(0, (cart[f] || 0) + +b.dataset.d); if (!cart[f]) delete cart[f]; saveCart(); renderCart(false); });
+$('#cartList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const f = b.dataset.q; cart[f] = Math.max(0, (cart[f] || 0) + +b.dataset.d); if (!cart[f]) delete cart[f]; saveCart(); renderCart(false); ctaMode(); });
 $('#cartGo').addEventListener('click', () => { $('#cartNote').textContent = Object.keys(cart).length ? 'オンライン販売は準備中です。空港・都内アンテナショップでお求めください。' : 'カートは空です。'; });
 let pickF = 'milk';
 $$('#visit .pick button').forEach(b => b.addEventListener('click', () => { pickF = b.dataset.f; $$('#visit .pick button').forEach(x => x.classList.toggle('on', x === b)); }));
