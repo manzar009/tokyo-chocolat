@@ -266,14 +266,27 @@ button.cta{border:0;cursor:pointer}
 #wide .over p.small{font:500 12px/1.9 var(--f-sans);letter-spacing:.2em;text-transform:uppercase;text-align:right}
 
 /* ---------- CTA ---------- */
-#visit{position:relative;height:110vh;overflow:hidden;display:grid;place-items:center;
-  background:radial-gradient(120% 90% at 20% 110%,#752F41 0%,rgba(117,47,65,0) 55%),
-             radial-gradient(90% 80% at 85% 100%,#33482B 0%,rgba(51,72,43,0) 60%),
-             linear-gradient(180deg,var(--paper) 0%,#D8BC88 16%,#A57A35 48%,#4A2A16 100%)}
-#visit .rows{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1vh;opacity:.32;pointer-events:none}
+@property --c1{syntax:'<color>';inherits:true;initial-value:#4A2C20}
+@property --c2{syntax:'<color>';inherits:true;initial-value:#B28366}
+@property --c3{syntax:'<color>';inherits:true;initial-value:#D8BC88}
+#visit{--c1:#3A2116;--c2:#9C6B48;--c3:#D9BE90;position:relative;height:110vh;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(180deg,var(--paper) 0%,var(--c3) 22%,var(--c2) 58%,var(--c1) 100%);
+  transition:--c1 1.4s ease,--c2 1.4s ease,--c3 1.4s ease}
+#visit[data-f="strawberry"]{--c1:#4A1424;--c2:#B4566C;--c3:#F0C9D1}
+#visit[data-f="matcha"]{--c1:#1E2A16;--c2:#5E7A4A;--c3:#CFD7B5}
+#visit .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;pointer-events:none;mix-blend-mode:soft-light;will-change:transform}
+#visit .blob.b1{width:70vw;height:70vw;left:-20vw;top:30%;background:radial-gradient(circle,var(--c2),transparent 65%);animation:drift1 18s ease-in-out infinite alternate}
+#visit .blob.b2{width:60vw;height:60vw;right:-18vw;top:10%;background:radial-gradient(circle,var(--c3),transparent 65%);animation:drift2 22s ease-in-out infinite alternate}
+#visit .blob.b3{width:55vw;height:55vw;left:25vw;bottom:-25vw;background:radial-gradient(circle,var(--c1),transparent 65%);animation:drift3 16s ease-in-out infinite alternate}
+@keyframes drift1{to{transform:translate(28vw,-14vh) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-24vw,22vh) scale(.9)}}
+@keyframes drift3{to{transform:translate(-18vw,-20vh) scale(1.2)}}
+#visit .rows{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:1vh;opacity:.16;pointer-events:none}
 #visit .row{display:flex;white-space:nowrap;font:300 italic clamp(64px,11vw,180px)/1 var(--f-display);color:#fff;mix-blend-mode:soft-light;will-change:transform}
 #visit .row span{padding-right:.4em}
-#visit .box{position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;padding:0 20px}
+#visit .box{position:relative;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;width:min(560px,calc(100vw - 32px));padding:48px 40px 44px;border-radius:28px;
+  background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(22px) saturate(1.25);backdrop-filter:blur(22px) saturate(1.25);border:1px solid rgba(255,255,255,.28);box-shadow:0 40px 80px -40px rgba(20,10,5,.5)}
+#visit .box .fl{font:300 italic clamp(44px,5vw,72px)/1 var(--f-display);color:#fff;transition:opacity .4s}
 #visit .box .price{font:300 clamp(40px,6vw,88px)/1 var(--f-sans);letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
 #visit .box .price small{font:500 14px/1 var(--f-jp);letter-spacing:.2em;margin-left:10px}
 .cta{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 26px;border-radius:4px;background:#fff;color:var(--ink);
@@ -435,7 +448,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <p class="season"><b>03</b>Matcha chocolate — 抹茶</p>
             <h3>Matcha<span>抹茶</span></h3>
             <p class="desc">濃厚な抹茶の、ほろ苦い大人の味。</p>
-            <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
+            <dl><div><dt>Contents</dt><dd>50g</dd></div></dl>
             <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="matcha">Add to cart</button></div>
           </div>
         </article>
@@ -445,7 +458,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <p class="season"><b>01</b>Milk chocolate — ミルク</p>
             <h3>Milk<span>ミルク</span></h3>
             <p class="desc">まろやかで、やさしい甘さのミルクチョコレート。</p>
-            <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
+            <dl><div><dt>Contents</dt><dd>50g</dd></div></dl>
             <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="milk">Add to cart</button></div>
           </div>
         </article>
@@ -455,7 +468,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
             <p class="season"><b>02</b>Strawberry chocolate — いちご</p>
             <h3>Strawberry<span>いちご</span></h3>
             <p class="desc">甘酸っぱい、いちごのチョコレート。</p>
-            <dl><div><dt>Contents</dt><dd>50g</dd></div><div><dt>Size</dt><dd>110×110×40 mm</dd></div></dl>
+            <dl><div><dt>Contents</dt><dd>50g</dd></div></dl>
             <div class="buy"><p class="price">¥1,400<small>税抜</small></p><button type="button" class="tag add" data-add="strawberry">Add to cart</button></div>
           </div>
         </article>
@@ -477,7 +490,8 @@ footer .giantmark svg{display:block;width:100%;height:auto}
     </div>
   </section>
 
-  <section id="visit" aria-labelledby="visitTitle">
+  <section id="visit" aria-labelledby="visitTitle" data-f="milk">
+    <i class="blob b1" aria-hidden="true"></i><i class="blob b2" aria-hidden="true"></i><i class="blob b3" aria-hidden="true"></i>
     <div class="rows" aria-hidden="true">
       <div class="row" data-dir="1"><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span></div>
       <div class="row" data-dir="-1"><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span><span>ひと粒の東京</span><span>Tokyo Chocolat</span></div>
@@ -485,6 +499,7 @@ footer .giantmark svg{display:block;width:100%;height:auto}
     </div>
     <div class="box">
       <p class="eyebrow" id="visitTitle" style="color:#fff">Take Tokyo home</p>
+      <p class="fl" id="visitFl">Milk</p>
       <p class="price">¥1,400<small>税抜</small></p>
       <div class="pick" role="group" aria-label="フレーバー">
         <button type="button" data-f="milk" class="on">Milk</button><button type="button" data-f="strawberry">Strawberry</button><button type="button" data-f="matcha">Matcha</button>
@@ -748,7 +763,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape') openCart(false); });
 $('#cartList').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; const f = b.dataset.q; cart[f] = Math.max(0, (cart[f] || 0) + +b.dataset.d); if (!cart[f]) delete cart[f]; saveCart(); renderCart(false); ctaMode(); });
 $('#cartGo').addEventListener('click', () => { $('#cartNote').textContent = Object.keys(cart).length ? 'オンライン販売は準備中です。空港・都内アンテナショップでお求めください。' : 'カートは空です。'; });
 let pickF = 'milk';
-$$('#visit .pick button').forEach(b => b.addEventListener('click', () => { pickF = b.dataset.f; $$('#visit .pick button').forEach(x => x.classList.toggle('on', x === b)); }));
+$$('#visit .pick button').forEach(b => b.addEventListener('click', () => { pickF = b.dataset.f; visitEl.dataset.f = pickF; const vf = $('#visitFl'); vf.style.opacity = 0; setTimeout(() => { vf.textContent = FL[pickF][0]; vf.style.opacity = 1; }, 250); $$('#visit .pick button').forEach(x => x.classList.toggle('on', x === b)); }));
 $('#addSel').addEventListener('click', () => addToCart(pickF));
 $$('.pcard .add').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); addToCart(b.dataset.add); }));
 
@@ -850,7 +865,7 @@ const rB = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 rB.setPixelRatio(Math.min(devicePixelRatio, 1.75)); rB.outputEncoding = THREE.sRGBEncoding;
 rB.toneMapping = THREE.ACESFilmicToneMapping; rB.toneMappingExposure = 1.12;
 $('#glBack').appendChild(rB.domElement);
-const sceneB = new THREE.Scene(); const camB = new THREE.PerspectiveCamera(32, 1, 0.1, 100); camB.position.set(0, 0, 10);
+const sceneB = new THREE.Scene(); const camB = new THREE.PerspectiveCamera(32, 1, 2, 40); camB.position.set(0, 0, 10);
 sceneB.environment = new THREE.PMREMGenerator(rB).fromScene(env, 0.04).texture;
 sceneB.add(new THREE.AmbientLight(0xffffff, 0.55));
 const kB = new THREE.DirectionalLight(0xfff4e6, 1.1); kB.position.set(3, 7, 6); sceneB.add(kB);
@@ -902,7 +917,7 @@ const rC = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 rC.setPixelRatio(Math.min(devicePixelRatio, 1.75)); rC.outputEncoding = THREE.sRGBEncoding;
 rC.toneMapping = THREE.ACESFilmicToneMapping; rC.toneMappingExposure = 1.12;
 const boxHost = $('#glBox'); boxHost.appendChild(rC.domElement);
-const sceneC = new THREE.Scene(); const camC = new THREE.PerspectiveCamera(32, 1, 0.1, 100); camC.position.set(0, 0, 10);
+const sceneC = new THREE.Scene(); const camC = new THREE.PerspectiveCamera(32, 1, 2, 40); camC.position.set(0, 0, 10);
 sceneC.environment = new THREE.PMREMGenerator(rC).fromScene(env, 0.04).texture;
 sceneC.add(new THREE.AmbientLight(0xffffff, 0.55));
 { const k = new THREE.DirectionalLight(0xfff4e6, 1.1); k.position.set(3, 7, 6); sceneC.add(k);
@@ -935,12 +950,12 @@ function makeDrawer(scene = sceneC) {
   const g = new THREE.Group(), spin = new THREE.Group(); g.add(spin);
   const sh = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(shC), transparent: true, depthWrite: false }));
   sh.raycast = () => {}; sh.rotation.x = -Math.PI / 2; sh.position.y = -1.0; g.add(sh);
-  const sl = { top: slab(BW, BT, BD, 0, BH / 2 - BT / 2, 0, spin), bot: slab(BW, BT, BD, 0, -BH / 2 + BT / 2, 0, spin),
+  const sl = { top: slab(BW, BT, BD - 2 * BT, 0, BH / 2 - BT / 2, 0, spin), bot: slab(BW, BT, BD - 2 * BT, 0, -BH / 2 + BT / 2, 0, spin),
                s1: slab(BW, BH, BT, 0, 0, BD / 2 - BT / 2, spin), s2: slab(BW, BH, BT, 0, 0, -BD / 2 + BT / 2, spin) };
   const tray = new THREE.Group(); spin.add(tray);
   const tw = BW - 0.03, th = BH - 2 * BT - 0.012, td = BD - 2 * BT - 0.012, wt = 0.03;
-  const tr = { floor: slab(tw, wt, td, 0, -th / 2 + wt / 2, 0, tray), e1: slab(wt, th, td, tw / 2 - wt / 2, 0, 0, tray), e2: slab(wt, th, td, -tw / 2 + wt / 2, 0, 0, tray),
-               z1: slab(tw, th, wt, 0, 0, td / 2 - wt / 2, tray), z2: slab(tw, th, wt, 0, 0, -td / 2 + wt / 2, tray) };
+  const tr = { floor: slab(tw - 2 * wt, wt, td - 2 * wt, 0, -th / 2 + wt / 2, 0, tray), e1: slab(wt, th, td, tw / 2 - wt / 2, 0, 0, tray), e2: slab(wt, th, td, -tw / 2 + wt / 2, 0, 0, tray),
+               z1: slab(tw - 2 * wt, th, wt, 0, 0, td / 2 - wt / 2, tray), z2: slab(tw - 2 * wt, th, wt, 0, 0, -td / 2 + wt / 2, tray) };
   // a 3 x 3 divider grid
   const fl = -th / 2 + wt, dh = 0.36, dvt = 0.022, dvs = [];
   [-1, 1].forEach(sgn => {
@@ -956,9 +971,9 @@ function makeDrawer(scene = sceneC) {
   const st = new THREE.Mesh(new THREE.PlaneGeometry(0.32, 0.32), stickerMat); st.rotation.x = -Math.PI / 2; st.position.set(0.62, glass.position.y + 0.006, 0); tray.add(st);
   const band = new THREE.Group(); spin.add(band);
   const bw = 1.0, bt = 0.012;
-  const bd = { top: slab(BW + 2 * bt, bt, bw, 0, BH / 2 + bt / 2, 0, band), bot: slab(BW + 2 * bt, bt, bw, 0, -BH / 2 - bt / 2, 0, band),
+  const bd = { top: slab(BW, bt, bw, 0, BH / 2 + bt / 2, 0, band), bot: slab(BW, bt, bw, 0, -BH / 2 - bt / 2, 0, band),
                a: slab(bt, BH + 2 * bt, bw, BW / 2 + bt / 2, 0, 0, band), b: slab(bt, BH + 2 * bt, bw, -BW / 2 - bt / 2, 0, 0, band) };
-  const o = { g, spin, tray, band, f: null, ux: 0, uy: 0, extra: 0 }; g.userData.box = o;
+  const o = { g, spin, tray, band, sh, parts: [...Object.values(sl), ...Object.values(tr)], f: null, ux: 0, uy: 0, extra: 0 }; g.userData.box = o;
   o.set = (f) => {
     if (o.f === f) return; o.f = f; const K = KIT[f], w = paperWhite, c = K.tray, W = bandWhite;
     sl.top.material = [w, w, K.sleeve[2], w, w, w]; sl.bot.material = [w, w, w, K.sleeve[3], w, w];
@@ -973,6 +988,18 @@ function makeDrawer(scene = sceneC) {
     bd.a.material = [K.bA, W, W, W, W, W]; bd.b.material = [W, K.bB, W, W, W, W];
   };
   scene.add(g); return o;
+}
+// the contact shadow follows the box: it sits right under its lowest corner, matches its footprint,
+// and softens while the box is lifted
+const _bb = new THREE.Box3();
+function fitShadow(o, lift = 0) {
+  o.g.updateMatrixWorld(true);
+  _bb.makeEmpty(); o.parts.forEach(m => _bb.expandByObject(m));
+  const s = o.g.scale.x || 1, p = o.g.position;
+  const minY = (_bb.min.y - p.y) / s - lift, X = (_bb.max.x - _bb.min.x) / s, Z = (_bb.max.z - _bb.min.z) / s;
+  o.sh.position.set(((_bb.min.x + _bb.max.x) / 2 - p.x) / s, minY - 0.015, ((_bb.min.z + _bb.max.z) / 2 - p.z) / s);
+  o.sh.scale.set(Math.max(0.3, X / 3.4), Math.max(0.3, Z / 3.0), 1);
+  o.sh.material.opacity = 0.8 * (1 - Math.min(0.7, lift * 1.2));
 }
 const BX = [makeDrawer(), makeDrawer(), makeDrawer()];          // left, centre, right
 BX[0].set('milk'); BX[1].set('matcha'); BX[2].set('strawberry');
@@ -1065,6 +1092,7 @@ function seqFrame(t) {
   const sway = Math.sin(t * 0.5) * 0.12;
   BX.forEach((b, i) => {
     // the scroll sequence pose
+    let hop = 0;
     let x, y, s, rx = 0.5, ry = -0.65 + sway * 0.6, op = 0;
     if (narrow) { x = 0; y = (1 - i) * 1.75 * (1 - out); s = mix(0.55, 0.85, out); if (i === 1) y = mix(y, -0.35, out); }
     else { x = (i - 1) * 2.85; y = 0.2; s = mix(0.72, 1.05, out); if (i === 1) { x = mix(0, 1.1, out); y = mix(0.2, -0.15, out); } }
@@ -1072,7 +1100,7 @@ function seqFrame(t) {
     if (i === 1) {
       op = open; rx = 0.5 + open1 * 0.22;
       ry += ((flip1 + flip2) * Math.PI * 2) % (Math.PI * 2);
-      y += Math.sin(flip1 * Math.PI) * 0.4 + Math.sin(flip2 * Math.PI) * 0.4;
+      hop = Math.sin(flip1 * Math.PI) * 0.4 + Math.sin(flip2 * Math.PI) * 0.4;
       s *= 1 - 0.12 * (Math.sin(flip1 * Math.PI) + Math.sin(flip2 * Math.PI));
     }
     // the carousel pose
@@ -1090,6 +1118,8 @@ function seqFrame(t) {
     b.g.scale.setScalar(Math.max(0.0001, s));
     if ((!drag || drag.b !== b) && Math.abs(u - uPrev) > 0.002) { b.ux = damp(b.ux, 0, 4, dtC); b.uy = damp(b.uy, 0, 4, dtC); }   // scrolling eases it back
     b.spin.rotation.set(rx + b.ux, ry + b.uy + b.extra, Math.sin(t * 0.3 + i) * 0.02);
+    b.spin.position.y = hop;
+    if (b.g.visible) { fitShadow(b, hop); b.sh.material.opacity *= 1 - 0.6 * k; }
     b.tray.position.x = op * 1.5;
     b.band.visible = bandOff < 0.999;
     b.band.position.set(0, bandOff * 0.5, bandOff * 2.8);
@@ -1148,6 +1178,7 @@ function frame() {
     backBox.g.position.set(bcur.x, bcur.py + Math.sin(t * 0.7 + 1) * 0.04, 0);
     backBox.g.scale.setScalar(Math.max(0.0001, bcur.s * spin.dip));
     backBox.spin.rotation.set(0.5 + Math.sin(t * 0.4) * 0.05 * (1 - h), -0.65 + spin.v + h * Math.PI * 2 + Math.sin(t * 0.5) * 0.072 + Math.sin(sy * 0.0012) * 0.25 * (1 - h), Math.sin(t * 0.3 + 1) * 0.02);
+    fitShadow(backBox);
   }
   // the gold mark and the package both live on the back canvas, behind the text
   if (backBox.g.visible || coin.visible) rB.render(sceneB, camB); else rB.clear();
